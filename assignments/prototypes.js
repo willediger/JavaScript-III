@@ -160,3 +160,112 @@ console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+  
+function Villian(attributes) {
+  Humanoid.call(this, attributes);
+  this.evilReason = attributes.evilReason;
+  this.damageAmount = attributes.damageAmount;
+  this.attackName = attributes.attackName;
+  this.attackChance = attributes.attackChance;
+}
+
+Villian.prototype = Object.create(Humanoid.prototype);
+
+Villian.prototype.attack = function(subjectOfAttack) {
+  if (this.attackChance()) {
+    subjectOfAttack.healthPoints -= this.damageAmount;
+    console.log(subjectOfAttack.takeDamage());
+    if (subjectOfAttack.healthPoints < 0) {
+      subjectOfAttack.healthPoints = 0;
+      console.log(subjectOfAttack.destroy());
+      result = `${subjectOfAttack.name} was ${this.attackName}${this.attackName[this.attackName.length-1]}ed.`
+      console.log(result);
+      return result;
+    } 
+  } else {
+    result = `${subjectOfAttack.name} was not ${this.attackName}${this.attackName[this.attackName.length-1]}ed.`
+    console.log(result);
+    return result;
+  }
+}
+
+function Hero(attributes) {
+  Humanoid.call(this, attributes);
+  this.goodReason = attributes.goodReason;
+  this.damageAmount = attributes.damageAmount;
+  this.attackName = attributes.attackName;
+  this.attackChance = attributes.attackChance;
+}
+
+Hero.prototype = Object.create(Humanoid.prototype);
+
+Hero.prototype.attack = function(subjectOfAttack) {
+  if (this.attackChance()) {
+    subjectOfAttack.healthPoints -= this.damageAmount;
+    console.log(subjectOfAttack.takeDamage());
+    if (subjectOfAttack.healthPoints < 0) {
+      subjectOfAttack.healthPoints = 0;
+      console.log(subjectOfAttack.destroy());
+      result = `${subjectOfAttack.name} was ${this.attackName}${this.attackName[this.attackName.length-1]}ed.`
+      console.log(result);
+      return result;
+    } 
+  } else {
+    result = `${subjectOfAttack.name} was not ${this.attackName}${this.attackName[this.attackName.length-1]}ed.`
+    console.log(result);
+    return result;
+  }
+}
+
+const bruceBanner = new Hero({
+  createdAt: new Date(),
+  dimensions: {
+    length: 1,
+    width: 2,
+    height: 4,
+  },
+  healthPoints: 1000,
+  name: 'Bruce Banner',
+  team: 'Avengers',
+  weapons: [
+    'HulkBuster Iron Man suit'
+  ],
+  language: 'English',
+  goodReason: 'To save the universe',
+  damageAmount: 50,
+  attackName: 'smash',
+  attackChance: function() {
+    return true;
+  }
+});
+
+
+const thanos = new Villian({
+  createdAt: new Date(),
+  dimensions: {
+    length: 1,
+    width: 2,
+    height: 4,
+  },
+  healthPoints: 100000,
+  name: 'Thanos',
+  team: 'Chaos',
+  weapons: [
+    'Infinity Gauntlet'
+  ],
+  language: 'English',
+  evilReason: 'To snap half the beings of the universe out of existence randomly',
+  damageAmount: Infinity,
+  attackName: 'snap',
+  attackChance: function() {
+    return Math.random() < 0.5;
+  }
+});
+
+bruceBanner.attack(thanos);
+
+thanos.attack(mage);
+thanos.attack(swordsman);
+thanos.attack(archer);
+thanos.attack(bruceBanner);
