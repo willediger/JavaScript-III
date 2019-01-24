@@ -15,6 +15,17 @@
   * destroy() // prototype method -> returns the string: 'Object was removed from the game.'
 */
 
+function GameObject(attributes) {
+  this.createdAt = attributes.createdAt;
+  this.dimensions = attributes.dimensions;
+}
+
+GameObject.prototype.destroy = () => 'Object was removed from the game.';
+
+// testing on an example instance of GameObject
+// const myGameObject = new GameObject({createdAt: 'start', dimensions: '4x2x3'});
+// console.log(myGameObject.destroy()); //'Object was removed from the game.'
+
 /*
   === CharacterStats ===
   * healthPoints
@@ -22,6 +33,28 @@
   * takeDamage() // prototype method -> returns the string '<object name> took damage.'
   * should inherit destroy() from GameObject's prototype
 */
+
+function CharacterStats(attributes) {
+  GameObject.call(this, attributes);
+  this.healthPoints = attributes.healthPoints;
+  this.name = attributes.name;
+}
+
+CharacterStats.prototype = Object.create(GameObject.prototype);
+
+CharacterStats.prototype.destroy = function() {
+  return `${this.name} was removed from the game.`;
+}
+
+CharacterStats.prototype.takeDamage = function() {
+  return `${this.name} took damage.`;
+}
+
+//testing on an example instance of CharacterStats
+// const bob = new CharacterStats({healthPoints: 100, name: 'Bob', createdAt: 'start', dimensions: '4x2x3'});
+// console.log(bob.takeDamage());
+// console.log(bob.destroy());
+
 
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
@@ -33,6 +66,26 @@
   * should inherit takeDamage() from CharacterStats
 */
  
+function Humanoid(attributes) {
+  CharacterStats.call(this, attributes);
+  this.team = attributes.team;
+  this.weapons = attributes.weapons;
+  this.language = attributes.language;
+}
+
+Humanoid.prototype = Object.create(CharacterStats.prototype);
+
+Humanoid.prototype.greet = function() {
+  return `${this.name} offers a greeting in ${this.language}.`;
+}
+
+//testing on an example insteane of Humanoid
+// const joe = new Humanoid({team: 'Blue', weapons: ['shotgun', 'crossbow'], language: 'English', healthPoints: 100, name: 'Joe', createdAt: 'start', dimensions: '4x2x3'});
+// console.log(joe.greet());
+// console.log(joe.takeDamage());
+// console.log(joe.destroy());
+
+
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
   * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
@@ -41,70 +94,178 @@
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
-/*
-  const mage = new Humanoid({
-    createdAt: new Date(),
-    dimensions: {
-      length: 2,
-      width: 1,
-      height: 1,
-    },
-    healthPoints: 5,
-    name: 'Bruce',
-    team: 'Mage Guild',
-    weapons: [
-      'Staff of Shamalama',
-    ],
-    language: 'Common Tongue',
-  });
+const mage = new Humanoid({
+  createdAt: new Date(),
+  dimensions: {
+    length: 2,
+    width: 1,
+    height: 1,
+  },
+  healthPoints: 5,
+  name: 'Bruce',
+  team: 'Mage Guild',
+  weapons: [
+    'Staff of Shamalama',
+  ],
+  language: 'Common Tongue',
+});
 
-  const swordsman = new Humanoid({
-    createdAt: new Date(),
-    dimensions: {
-      length: 2,
-      width: 2,
-      height: 2,
-    },
-    healthPoints: 15,
-    name: 'Sir Mustachio',
-    team: 'The Round Table',
-    weapons: [
-      'Giant Sword',
-      'Shield',
-    ],
-    language: 'Common Tongue',
-  });
+const swordsman = new Humanoid({
+  createdAt: new Date(),
+  dimensions: {
+    length: 2,
+    width: 2,
+    height: 2,
+  },
+  healthPoints: 15,
+  name: 'Sir Mustachio',
+  team: 'The Round Table',
+  weapons: [
+    'Giant Sword',
+    'Shield',
+  ],
+  language: 'Common Tongue',
+});
 
-  const archer = new Humanoid({
-    createdAt: new Date(),
-    dimensions: {
-      length: 1,
-      width: 2,
-      height: 4,
-    },
-    healthPoints: 10,
-    name: 'Lilith',
-    team: 'Forest Kingdom',
-    weapons: [
-      'Bow',
-      'Dagger',
-    ],
-    language: 'Elvish',
-  });
+const archer = new Humanoid({
+  createdAt: new Date(),
+  dimensions: {
+    length: 1,
+    width: 2,
+    height: 4,
+  },
+  healthPoints: 10,
+  name: 'Lilith',
+  team: 'Forest Kingdom',
+  weapons: [
+    'Bow',
+    'Dagger',
+  ],
+  language: 'Elvish',
+});
 
-  console.log(mage.createdAt); // Today's date
-  console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
-  console.log(swordsman.healthPoints); // 15
-  console.log(mage.name); // Bruce
-  console.log(swordsman.team); // The Round Table
-  console.log(mage.weapons); // Staff of Shamalama
-  console.log(archer.language); // Elvish
-  console.log(archer.greet()); // Lilith offers a greeting in Elvish.
-  console.log(mage.takeDamage()); // Bruce took damage.
-  console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
+console.log(mage.createdAt); // Today's date
+console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
+console.log(swordsman.healthPoints); // 15
+console.log(mage.name); // Bruce
+console.log(swordsman.team); // The Round Table
+console.log(mage.weapons); // Staff of Shamalama
+console.log(archer.language); // Elvish
+console.log(archer.greet()); // Lilith offers a greeting in Elvish.
+console.log(mage.takeDamage()); // Bruce took damage.
+console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
+
 
   // Stretch task: 
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+  
+function Villian(attributes) {
+  Humanoid.call(this, attributes);
+  this.evilReason = attributes.evilReason;
+  this.damageAmount = attributes.damageAmount;
+  this.attackName = attributes.attackName;
+  this.attackChance = attributes.attackChance;
+}
+
+Villian.prototype = Object.create(Humanoid.prototype);
+
+Villian.prototype.attack = function(subjectOfAttack) {
+  if (this.attackChance()) {
+    subjectOfAttack.healthPoints -= this.damageAmount;
+    console.log(subjectOfAttack.takeDamage());
+    if (subjectOfAttack.healthPoints < 0) {
+      subjectOfAttack.healthPoints = 0;
+      console.log(subjectOfAttack.destroy());
+      result = `${subjectOfAttack.name} was ${this.attackName}${this.attackName[this.attackName.length-1]}ed.`
+      console.log(result);
+      return result;
+    } 
+  } else {
+    result = `${subjectOfAttack.name} was not ${this.attackName}${this.attackName[this.attackName.length-1]}ed.`
+    console.log(result);
+    return result;
+  }
+}
+
+function Hero(attributes) {
+  Humanoid.call(this, attributes);
+  this.goodReason = attributes.goodReason;
+  this.damageAmount = attributes.damageAmount;
+  this.attackName = attributes.attackName;
+  this.attackChance = attributes.attackChance;
+}
+
+Hero.prototype = Object.create(Humanoid.prototype);
+
+Hero.prototype.attack = function(subjectOfAttack) {
+  if (this.attackChance()) {
+    subjectOfAttack.healthPoints -= this.damageAmount;
+    console.log(subjectOfAttack.takeDamage());
+    if (subjectOfAttack.healthPoints < 0) {
+      subjectOfAttack.healthPoints = 0;
+      console.log(subjectOfAttack.destroy());
+      result = `${subjectOfAttack.name} was ${this.attackName}${this.attackName[this.attackName.length-1]}ed.`
+      console.log(result);
+      return result;
+    } 
+  } else {
+    result = `${subjectOfAttack.name} was not ${this.attackName}${this.attackName[this.attackName.length-1]}ed.`
+    console.log(result);
+    return result;
+  }
+}
+
+const bruceBanner = new Hero({
+  createdAt: new Date(),
+  dimensions: {
+    length: 1,
+    width: 2,
+    height: 4,
+  },
+  healthPoints: 1000,
+  name: 'Bruce Banner',
+  team: 'Avengers',
+  weapons: [
+    'HulkBuster Iron Man suit'
+  ],
+  language: 'English',
+  goodReason: 'To save the universe',
+  damageAmount: 50,
+  attackName: 'smash',
+  attackChance: function() {
+    return true;
+  }
+});
+
+
+const thanos = new Villian({
+  createdAt: new Date(),
+  dimensions: {
+    length: 1,
+    width: 2,
+    height: 4,
+  },
+  healthPoints: 100000,
+  name: 'Thanos',
+  team: 'Chaos',
+  weapons: [
+    'Infinity Gauntlet'
+  ],
+  language: 'English',
+  evilReason: 'To snap half the beings of the universe out of existence randomly',
+  damageAmount: Infinity,
+  attackName: 'snap',
+  attackChance: function() {
+    return Math.random() < 0.5;
+  }
+});
+
+bruceBanner.attack(thanos);
+
+thanos.attack(mage);
+thanos.attack(swordsman);
+thanos.attack(archer);
+thanos.attack(bruceBanner);
