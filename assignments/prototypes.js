@@ -178,8 +178,8 @@ Villian.prototype.attack = function(subjectOfAttack) {
     console.log(subjectOfAttack.takeDamage());
     if (subjectOfAttack.healthPoints < 0) {
       subjectOfAttack.healthPoints = 0;
+      let result = `${subjectOfAttack.name} was ${this.attackName}${this.attackName[this.attackName.length-1]}ed.`
       console.log(subjectOfAttack.destroy());
-      result = `${subjectOfAttack.name} was ${this.attackName}${this.attackName[this.attackName.length-1]}ed.`
       console.log(result);
       return result;
     } 
@@ -206,8 +206,8 @@ Hero.prototype.attack = function(subjectOfAttack) {
     console.log(subjectOfAttack.takeDamage());
     if (subjectOfAttack.healthPoints < 0) {
       subjectOfAttack.healthPoints = 0;
+      let result = `${subjectOfAttack.name} was ${this.attackName}${this.attackName[this.attackName.length-1]}ed.`
       console.log(subjectOfAttack.destroy());
-      result = `${subjectOfAttack.name} was ${this.attackName}${this.attackName[this.attackName.length-1]}ed.`
       console.log(result);
       return result;
     } 
